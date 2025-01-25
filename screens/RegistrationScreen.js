@@ -15,7 +15,7 @@ import InputField from "../components/InputField";
 import Avatar from "../components/Avatar";
 import CustomTitle from "../components/CustomTitle";
 
-export default function RegistrationScreen() {
+export default function RegistrationScreen({ route, navigation }) {
   const [formData, setFormData] = useState({
     login: "",
     email: "",
@@ -59,7 +59,7 @@ export default function RegistrationScreen() {
 
             <SubmitButton text="Зареєструватися" onPress={handleSubmit} />
 
-            <TouchableOpacity style={styles.loginLink}>
+            <TouchableOpacity style={styles.loginLink} onPress={() => navigation.navigate('Login')}>
               <Text style={styles.loginLinkText}>
                 Вже є акаунт? <Text style={styles.linkText}>Увійти</Text>
               </Text>

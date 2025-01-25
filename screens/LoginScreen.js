@@ -14,7 +14,7 @@ import SubmitButton from "../components/SubmitButton";
 import InputField from "../components/InputField";
 import CustomTitle from "../components/CustomTitle";
 
-export default function LoginScreen() {
+export default function LoginScreen({ route, navigation, setIsLoggedIn }) {
     const [formData, setFormData] = useState({
         login: "",
         email: "",
@@ -27,6 +27,7 @@ export default function LoginScreen() {
 
     const handleSubmit = () => {
         console.log("Дані форми:", formData);
+        setIsLoggedIn(true);
     };
 
     return (
@@ -50,9 +51,9 @@ export default function LoginScreen() {
                         onChangeText={(text) => handleChange("password", text)}
                     />
 
-                    <SubmitButton text="Зареєструватися" onPress={handleSubmit} />
+                    <SubmitButton text="Увійти" onPress={handleSubmit} />
 
-                    <TouchableOpacity style={styles.loginLink}>
+                    <TouchableOpacity style={styles.loginLink} onPress={() => navigation.navigate("Signup")}>
                         <Text style={styles.loginLinkText}>
                             Немає аккаунту? <Text style={styles.linkText}>Зареєструватися</Text>
                         </Text>
