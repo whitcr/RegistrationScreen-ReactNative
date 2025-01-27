@@ -8,7 +8,7 @@ export default function SubmitButton({ text, onPress, disable = false }) {
     return (
         <TouchableOpacity
             style={[styles.button, disable && styles.buttonDisabled]}
-            onPress={disable ? null : onPress}
+            onPress={onPress}
             disabled={disable}
         >
             <Text style={styles.buttonText}>{text}</Text>

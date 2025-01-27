@@ -1,22 +1,38 @@
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../styles/global";
+import MapView from 'react-native-maps';
+import { useNavigation } from '@react-navigation/native';
 
 export default function Post({ image, title, location, commentsCount, likesCount }) {
+    const navigation = useNavigation();
+
+    const handlePressLocation = () => {
+        navigation.navigate('MapScreen', { location });
+    };
+
+    const handlePressComments = () => {
+        navigation.navigate('CommentScreen');
+    };
+
     return (
         <View style={styles.container}>
             <Image source={image} style={styles.image} />
             <Text style={styles.title}>{title}</Text>
             <View style={styles.footer}>
                 <View style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
-                    <Ionicons name="chatbubble" size={16} color={colors.orange} />
-                    <Text style={styles.comments}>{commentsCount}</Text>
+                    <TouchableOpacity onPress={handlePressComments} style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+                        <Ionicons name="chatbubble" size={16} color={colors.orange} />
+                        <Text style={styles.comments}>{commentsCount}</Text>
+                    </TouchableOpacity>
                     <Ionicons name="heart-outline" size={16} color={colors.orange} />
                     <Text style={styles.comments}>{likesCount}</Text>
                 </View>
                 <View style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
                     <Ionicons name="pin" size={16} color={colors.orange} />
-                    <Text style={styles.location}>{location}</Text>
+                    <TouchableOpacity onPress={handlePressLocation}>
+                        <Text style={styles.location}>{location}</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
         </View>

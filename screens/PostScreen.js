@@ -4,7 +4,7 @@ import UserProfile from "../components/UserProfile";
 import { ScrollView } from "react-native-gesture-handler";
 import { colors } from "../styles/global";
 
-export default function PostScreen() {
+export default function PostScreen({ navigation }) {
     return (
         <View style={styles.container}>
             <ScrollView contentContainerStyle={styles.contentContainer}>

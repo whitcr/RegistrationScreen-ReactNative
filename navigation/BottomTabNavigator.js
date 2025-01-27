@@ -7,10 +7,37 @@ import ProfileScreen from "../screens/ProfileScreen";
 import LogoutButton from "../components/LogoutButton";
 import CreatePostScreen from "../screens/CreatePostScreen";
 import PostScreen from "../screens/PostScreen";
+import MapScreen from "../screens/MapScreen";
+import { createStackNavigator } from "@react-navigation/stack";
+import CommentScreen from "../screens/CommentsScreen";
 
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
-const BottomTabNavigator = ({ setIsLoggedIn }) => {
+const AppNavigator = ({ setIsLoggedIn }) => {
+    return (
+        <Stack.Navigator>
+            <Stack.Screen
+                name="MainTabs"
+                component={BottomTabNavigator}
+                options={{ headerShown: false }}
+            />
+
+            <Stack.Screen
+                name="MapScreen"
+                component={MapScreen}
+            />
+
+            <Stack.Screen
+                name="CommentScreen"
+                component={CommentScreen}
+            />
+        </Stack.Navigator>
+    );
+}
+
+
+function BottomTabNavigator() {
     return (
         <Tab.Navigator
             initialRouteName="Profile"
@@ -104,4 +131,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default BottomTabNavigator;
+export default AppNavigator;

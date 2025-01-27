@@ -1,11 +1,28 @@
-import { useFocusEffect, useIsFocused, useNavigation, useRoute } from "@react-navigation/native";
-import React, { useEffect } from "react";
-import { View, StyleSheet, Text } from "react-native";
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
 
-const MapScreen = ({ navigation, route }) => {
+const MapScreen = ({ route }) => {
+    const { location } = route.params;
+
     return (
         <View style={styles.container}>
-            <Text>Map Screen</Text>
+            <MapView
+                style={styles.map}
+                initialRegion={{
+                    latitude: 37.78825,
+                    longitude: -122.4324,
+                    latitudeDelta: 0.0922,
+                    longitudeDelta: 0.0421,
+                }}
+                mapType="standard"
+            >
+                <Marker
+                    title="I am here"
+                    coordinate={{ latitude: 37.78825, longitude: -122.4324 }}
+                    description='Hello'
+                />
+            </MapView>
         </View>
     );
 };
@@ -13,9 +30,9 @@ const MapScreen = ({ navigation, route }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff",
-        alignItems: "center",
-        justifyContent: "center",
+    },
+    map: {
+        ...StyleSheet.absoluteFillObject,
     },
 });
 
