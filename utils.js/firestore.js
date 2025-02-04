@@ -53,9 +53,8 @@ export const uploadImage = async (
 ) => {
     try {
         const imageRef = ref(storage, `postPhotos/${userId}/${fileName}`);
-        console.log(imageRef);
         const result = await uploadBytes(imageRef, file);
-        console.log(result);
+
         const imageUrl = await getImageUrl(imageRef);
         console.log('Upload result:', result);
         return imageUrl;
