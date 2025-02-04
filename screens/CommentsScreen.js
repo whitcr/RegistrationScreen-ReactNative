@@ -63,8 +63,6 @@ const CommentScreen = () => {
         },
     ];
 
-
-
     return (
         <View style={styles.container}>
             <ImageHeader
