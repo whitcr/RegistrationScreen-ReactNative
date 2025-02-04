@@ -1,5 +1,5 @@
 import { combineReducers } from '@reduxjs/toolkit';
-import userReducer from '../reducers/userSlice';
+import userReducer from './userSlice';
 // імпортуйте інші ред'юсери
 
 const rootReducer = combineReducers({

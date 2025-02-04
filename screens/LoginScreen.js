@@ -1,20 +1,24 @@
 import React, { useState } from "react";
 import {
-    View,
-    StyleSheet,
-    Keyboard,
     ImageBackground,
+    Keyboard,
+    Pressable,
+    StyleSheet,
     Text,
     TouchableOpacity,
-    Pressable
+    View
 } from "react-native";
 
+import { useDispatch } from "react-redux";
+import CustomTitle from "../components/CustomTitle";
+import InputField from "../components/InputField";
 import PasswordField from "../components/PasswordField";
 import SubmitButton from "../components/SubmitButton";
-import InputField from "../components/InputField";
-import CustomTitle from "../components/CustomTitle";
+import { loginDB } from "../utils.js/auth";
 
-export default function LoginScreen({ route, navigation, setIsLoggedIn }) {
+export default function LoginScreen({ route, navigation }) {
+    const dispatch = useDispatch();
+
     const [formData, setFormData] = useState({
         login: "",
         email: "",
@@ -27,7 +31,11 @@ export default function LoginScreen({ route, navigation, setIsLoggedIn }) {
 
     const handleSubmit = () => {
         console.log("Дані форми:", formData);
-        setIsLoggedIn(true);
+        try {
+            loginDB({ email: formData.email, password: formData.password }, dispatch)
+        } catch (err) {
+            console.error('Login error:', err); 
+        }
     };
 
     return (

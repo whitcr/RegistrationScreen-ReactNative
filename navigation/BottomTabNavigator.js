@@ -1,27 +1,28 @@
-import { StyleSheet, View } from "react-native";
+import Ionicons from '@expo/vector-icons/Ionicons';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Ionicons from '@expo/vector-icons/Ionicons'
+import { StyleSheet, View } from "react-native";
 
-import { colors } from "../styles/global";
-import ProfileScreen from "../screens/ProfileScreen";
-import LogoutButton from "../components/LogoutButton";
-import CreatePostScreen from "../screens/CreatePostScreen";
-import PostScreen from "../screens/PostScreen";
-import MapScreen from "../screens/MapScreen";
 import { createStackNavigator } from "@react-navigation/stack";
+import { useDispatch } from 'react-redux';
+import LogoutButton from "../components/LogoutButton";
 import CommentScreen from "../screens/CommentsScreen";
+import CreatePostScreen from "../screens/CreatePostScreen";
+import MapScreen from "../screens/MapScreen";
+import PostScreen from "../screens/PostScreen";
+import ProfileScreen from "../screens/ProfileScreen";
+import { colors } from "../styles/global";
+import { logoutDB } from "../utils.js/auth";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-const AppNavigator = ({ setIsLoggedIn }) => {
+const AppNavigator = () => {
     return (
         <Stack.Navigator>
-            <Stack.Screen
-                name="MainTabs"
-                component={BottomTabNavigator}
-                options={{ headerShown: false }}
-            />
+            <Stack.Screen name="MainTabs" options={{ headerShown: false }}>
+                {() => <BottomTabNavigator/>}
+            </Stack.Screen>
+
 
             <Stack.Screen
                 name="MapScreen"
@@ -38,6 +39,8 @@ const AppNavigator = ({ setIsLoggedIn }) => {
 
 
 function BottomTabNavigator() {
+    const dispatch = useDispatch();
+
     return (
         <Tab.Navigator
             initialRouteName="Profile"
@@ -56,7 +59,7 @@ function BottomTabNavigator() {
                     headerRightContainerStyle: { paddingRight: 8 },
                     headerRight: () => (
                         <LogoutButton
-                            onPress={() => setIsLoggedIn(false)}
+                            onPress={() => logoutDB(dispatch)}
                         />
                     ),
                     tabBarIcon: ({ focused }) => (
@@ -99,7 +102,7 @@ function BottomTabNavigator() {
                     headerRightContainerStyle: { paddingRight: 8 },
                     headerRight: () => (
                         <LogoutButton
-                            onPress={() => setIsLoggedIn(false)}
+                            onPress={() => logoutDB(dispatch)}
                         />
                     ),
                     tabBarIcon: ({ focused }) => (

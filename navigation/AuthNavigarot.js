@@ -1,11 +1,11 @@
-import { createStackNavigator } from "@react-navigation/stack"
+import { createStackNavigator } from "@react-navigation/stack";
 
 import LoginScreen from "../screens/LoginScreen";
 import RegistrationScreen from "../screens/RegistrationScreen";
 
 const Stack = createStackNavigator();
 
-const AuthNavigator = ({ setIsLoggedIn }) => {
+const AuthNavigator = () => {
     return (
         <Stack.Navigator
             initialRouteName="Login"
@@ -14,12 +14,13 @@ const AuthNavigator = ({ setIsLoggedIn }) => {
             }}
         >
             <Stack.Screen name="Login">
-                {props => <LoginScreen {...props} setIsLoggedIn={setIsLoggedIn} />}
+                {props => <LoginScreen {...props}/>}
             </Stack.Screen>
             <Stack.Screen
                 name="Signup"
-                component={RegistrationScreen}
-            />
+            >
+                {props => <RegistrationScreen {...props}/>}
+            </Stack.Screen>
         </Stack.Navigator>
     );
 };

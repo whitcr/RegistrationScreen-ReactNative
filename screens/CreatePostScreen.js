@@ -1,10 +1,15 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { View, Text, Image, TextInput, TouchableOpacity, StyleSheet, Pressable, Keyboard } from 'react-native';
-import { colors } from '../styles/global';
-import Ionicons from '@expo/vector-icons/Ionicons'
-import SubmitButton from '../components/SubmitButton';
-import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { CameraView, useCameraPermissions } from 'expo-camera';
+import * as ImagePicker from 'expo-image-picker';
 import * as Location from 'expo-location';
+import { nanoid } from 'nanoid';
+import React, { useEffect, useRef, useState } from 'react';
+import { Alert, Button, Image, Keyboard, Pressable, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import "react-native-get-random-values";
+import { useSelector } from "react-redux";
+import SubmitButton from '../components/SubmitButton';
+import { colors } from '../styles/global';
+import { addPost, uploadImage } from '../utils.js/firestore';
 
 const CreatePostScreen = ({ navigation }) => {
     const [facing, setFacing] = useState('back');
@@ -13,7 +18,7 @@ const CreatePostScreen = ({ navigation }) => {
     const [location, setLocation] = useState(null);
     const [name, setName] = useState(null);
     const cameraRef = useRef(null);
-
+    const user = useSelector((state) => state.user.userInfo);
     useEffect(() => {
         (async () => {
 
@@ -49,18 +54,74 @@ const CreatePostScreen = ({ navigation }) => {
         }
     };
 
+    const pickImage = async () => {
+        const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+        if (!permissionResult.granted) {
+            alert("Permission to access media library is required!");
+            return;
+        }
+
+        const result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: 'images',
+            allowsEditing: false,
+            quality: 0.3,
+        });
+
+        if (!result.canceled) {
+            const { uri } = result.assets[0];
+
+            setPhoto(uri);
+        }
+    };
+
     const handleDelete = async () => {
         setPhoto(null);
         setLocation(null);
         setName(null);
     };
 
+    const uploadImageToStorage = async () => {
+        // if (!photo) return;
+
+        try {
+            const response = await fetch(photo);
+            const file = await response.blob();
+            const fileName = photo.split('/').pop(); // Отримуємо ім'я файлу з URI
+            const fileType = file.type; // Отримуємо тип файлу
+            const imageFile = new File([file], fileName, { type: fileType });
+            console.log(user.uid, imageFile, fileName, "imageFile");
+            const uploadedImageUrl = await uploadImage(user.uid, imageFile, fileName);
+
+            return uploadedImageUrl;
+        } catch (e) {
+            console.log(e);
+            return null;
+        }
+    }
+
     const handleSubmit = async () => {
-        console.log('Post data:', { photo, location });
-        navigation.navigate('Posts');
-        setPhoto(null);
-        setLocation(null);
-        setName(null);
+        // if (!user) return;
+
+        try {
+            const imageUrl = await uploadImageToStorage();
+            const postId = nanoid()
+
+            await addPost(postId, {
+                address: location,
+                id: postId,
+                image: imageUrl,
+                userId: user.uid,
+                title: name,
+            });
+
+            Alert.alert('Пост успішно створено!');
+            console.log('Post data:', { imageUrl, location });
+            navigation.navigate('Posts');
+            handleDelete()
+        } catch (error) {
+            console.log(error)
+        }
     };
 
 
@@ -79,10 +140,17 @@ const CreatePostScreen = ({ navigation }) => {
                     </CameraView>
                 )}
             </View>
+            
+            <TouchableOpacity onPress={pickImage}>
+                <Text style={[styles.btnText, styles.grayText]}>
+                    Завантажте фото
+                </Text>
+            </TouchableOpacity>
 
             <TextInput
                 style={styles.locationInput}
                 placeholder="Name"
+                onChangeText={setName}
             />
 
             <TextInput

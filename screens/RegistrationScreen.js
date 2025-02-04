@@ -1,19 +1,20 @@
 import React, { useState } from "react";
 import {
-  View,
-  StyleSheet,
-  Keyboard,
   ImageBackground,
+  Keyboard,
+  Pressable,
+  StyleSheet,
   Text,
   TouchableOpacity,
-  Pressable
+  View
 } from "react-native";
 
-import PasswordField from "../components/PasswordField";
-import SubmitButton from "../components/SubmitButton";
-import InputField from "../components/InputField";
 import Avatar from "../components/Avatar";
 import CustomTitle from "../components/CustomTitle";
+import InputField from "../components/InputField";
+import PasswordField from "../components/PasswordField";
+import SubmitButton from "../components/SubmitButton";
+import { registerDB } from "../utils.js/auth";
 
 export default function RegistrationScreen({ route, navigation }) {
   const [formData, setFormData] = useState({
@@ -28,6 +29,7 @@ export default function RegistrationScreen({ route, navigation }) {
 
   const handleSubmit = () => {
     console.log("Дані форми:", formData);
+    registerDB(formData.email, formData.password, formData.login);
   };
 
   return (

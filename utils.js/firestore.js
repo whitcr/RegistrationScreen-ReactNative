@@ -1,6 +1,6 @@
 import { doc, getDoc, setDoc } from 'firebase/firestore';
-import { db, storage } from '../../config';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { db, storage } from '../config';
 
 // Функція для додавання документа до колекції
 export const addUser = async (userId, userData) => {
@@ -52,7 +52,7 @@ export const uploadImage = async (
     fileName,
 ) => {
     try {
-        const imageRef = ref(storage, `profilePhotos/${userId}/${fileName}`);
+        const imageRef = ref(storage, `postPhotos/${userId}/${fileName}`);
         const result = await uploadBytes(imageRef, file);
 
         const imageUrl = await getImageUrl(imageRef);

@@ -6,6 +6,8 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 // Функція для підключення сховища файлів в проект
 import { getStorage } from "firebase/storage";
+import { initializeAuth, getReactNativePersistence } from 'firebase/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const firebaseConfig = {
     apiKey: 'AIzaSyC1F24zaglp-h_TgkNoPqkgMgK9ToVCWZQ',

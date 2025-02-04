@@ -5,8 +5,8 @@ import {
     signOut,
     updateProfile,
 } from 'firebase/auth';
-import { auth } from '../../config';
-import { setUserInfo, clearUserInfo } from '../redux/reducers/userSlice';
+import { auth } from '../config';
+import { setUserInfo, clearUserInfo } from '../redux/userSlice';
 import { addUser, getUser } from './firestore';
 
 // Функція для реєстрації користувача
