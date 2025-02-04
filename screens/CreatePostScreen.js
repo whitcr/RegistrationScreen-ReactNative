@@ -19,6 +19,7 @@ const CreatePostScreen = ({ navigation }) => {
     const [name, setName] = useState(null);
     const cameraRef = useRef(null);
     const user = useSelector((state) => state.user.userInfo);
+    
     useEffect(() => {
         (async () => {
 
@@ -68,11 +69,10 @@ const CreatePostScreen = ({ navigation }) => {
             quality: 0.3,
         });
 
-        if (!result.canceled) {
-            const { uri } = result.assets[0];
-
-            setPhoto(uri);
-        }
+        const { uri } = result.assets[0];
+        setPhoto(uri);
+        console.log(photo, "photo");
+        console.log(uri, "photoUri");
     };
 
     const handleDelete = async () => {
