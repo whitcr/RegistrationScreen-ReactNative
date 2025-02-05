@@ -1,10 +1,11 @@
-import { View, Text, StyleSheet, Image, ImageBackground, Keyboard } from "react-native";
-import Post from "../components/Post";
-import UserProfile from "../components/UserProfile";
-import { Pressable, ScrollView } from "react-native-gesture-handler";
+import { ImageBackground, Keyboard, StyleSheet, View } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import AvatarProfile from "../components/AvatarProfile";
+import Post from "../components/Post";
 
 export default function ProfileScreen() {
+
+
     return (
         <ScrollView onPress={Keyboard.dismiss} style={styles.mainContainer}>
             <ImageBackground

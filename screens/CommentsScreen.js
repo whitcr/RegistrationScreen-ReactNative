@@ -8,6 +8,13 @@ import {
     FlatList,
     Pressable,
 } from "react-native";
+import { Alert, TouchableOpacity } from "react-native";
+import { useEffect, useState } from "react";
+import { Ionicons } from "@expo/vector-icons";
+import { colors } from "../styles/global";
+import { addCommentToDB, getDocument } from "../utils.js/firestore";
+import 'react-native-get-random-values'
+import { nanoid } from "nanoid";
 
 const ImageHeader = ({ image, title }) => (
     <View style={styles.imageHeaderContainer}>
@@ -41,8 +48,48 @@ const CommentInput = () => {
     );
 };
 
-const CommentScreen = () => {
-    const comments = [
+const CommentScreen = ({ route, navigate }) => {
+
+    const [comments, setComments] = useState([]);
+    const [comment, setComment] = useState('');
+    const { postId } = route?.params;
+
+    const addComment = async () => {
+        const commentObj = {
+            id: nanoid(),
+            comment,
+            userId: user?.uid,
+            date: new Date().valueOf(),
+        }
+
+        try {
+            await addCommentToDB(postId, commentObj)
+            setComment('');
+            Alert.alert('Success!')
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    // функція для завантаження коментарів до поста
+    // по такому ж принципу реалізувати getUser по userId з коментаря в компоненті <Comment /> щоб показувати аватарку та ім'я (котрі будуть динамічно змінюватись, якщо автор комента змінить ім'я чи аватар)
+    const getComments = async () => {
+        try {
+            const result = await getDocument(postId, 'posts');
+
+            setComments(result?.comments);
+        } catch (error) {
+            console.log(error)
+        };
+    };
+
+    useEffect(() => {
+        if (postId) {
+            getComments();
+        }
+    }, [postId]);
+
+    setComments([
         {
             id: "1",
             avatar: require("../assets/BG.png"),
@@ -61,7 +108,7 @@ const CommentScreen = () => {
             text: "Thank you! That was very helpful!",
             date: "09 червня, 2020 | 09:20",
         },
-    ];
+    ]);
 
     return (
         <View style={styles.container}>

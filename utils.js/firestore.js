@@ -1,4 +1,4 @@
-import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
 import { db, storage } from '../config';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 
@@ -69,4 +69,30 @@ export const uploadImage = async (
 export const getImageUrl = async (imageRef) => {
     const url = await getDownloadURL(imageRef);
     return url;
+};
+
+export const fetchAllPosts = async () => {
+    try {
+        const querySnapshot = await getDocs(collection(db, 'posts'));
+        const posts = querySnapshot.docs.map(doc => ({
+            ...doc.data()
+        }));
+        console.log(posts);
+        return posts;
+    } catch (error) {
+        console.error('Error fetching posts:', error);
+        return [];
+    }
+};
+
+export const addCommentToDB = async (postId, comment) => {
+    try {
+        await updateDoc(doc(db, 'posts', postId), {
+            comments: arrayUnion(comment)
+        });
+
+        console.log('Comment added!');
+    } catch (error) {
+        console.error('Error adding comment:', error);
+    }
 };

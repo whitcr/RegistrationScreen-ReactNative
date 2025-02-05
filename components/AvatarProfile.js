@@ -1,13 +1,13 @@
 import { View, Text, StyleSheet, Image } from "react-native";
 
-export default function AvatarProfile({ avatar }) {
+export default function AvatarProfile({ avatar}) {
     return (
         <View style={styles.header}>
             <Image
                 source={avatar}
                 style={styles.profileImage}
             />
-            <Text style={styles.profileName}>Natali Romanova</Text>
+            <Text style={styles.profileName}>name</Text>
         </View>
     );
 }
