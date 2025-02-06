@@ -1,6 +1,6 @@
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { CameraView, useCameraPermissions } from 'expo-camera';
-// import * as ImagePicker from 'expo-image-picker';
+import * as ImagePicker from 'expo-image-picker';
 import * as Location from 'expo-location';
 import { nanoid } from 'nanoid';
 import React, { useEffect, useRef, useState } from 'react';
@@ -20,20 +20,20 @@ const CreatePostScreen = ({ navigation }) => {
     const cameraRef = useRef(null);
     const user = useSelector((state) => state.user.userInfo);
     
-    // useEffect(() => {
-    //     (async () => {
+    useEffect(() => {
+        (async () => {
 
-    //         let { status } = await Location.requestForegroundPermissionsAsync();
-    //         if (status !== 'granted') {
-    //             console.log(); ('Permission to access location was denied');
-    //             return;
-    //         }
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                console.log(); ('Permission to access location was denied');
+                return;
+            }
 
-    //         let location = await Location.getCurrentPositionAsync({});
-    //         console.log(location);
-    //         setLocation(location);
-    //     })();
-    // }, []);
+            let location = await Location.getCurrentPositionAsync({});
+            console.log(location);
+            setLocation(location);
+        })();
+    }, []);
 
     if (!permission) {
         return <View />;
