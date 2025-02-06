@@ -9,7 +9,7 @@ export default function Post({ data = [] }) {
 
 
     const handlePressLocation = () => {
-        navigation.navigate('MapScreen', { location });
+        navigation.navigate('MapScreen', { adress });
     };
 
     const handlePressComments = () => {
