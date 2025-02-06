@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, getDocs, setDoc } from 'firebase/firestore';
+import { arrayUnion, collection, doc, getDoc, getDocs, setDoc, updateDoc } from 'firebase/firestore';
 import { db, storage } from '../config';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 
@@ -94,5 +94,17 @@ export const addCommentToDB = async (postId, comment) => {
         console.log('Comment added!');
     } catch (error) {
         console.error('Error adding comment:', error);
+    }
+};
+
+export const getDocument = async (docId, collectionName) => {
+    const docRef = doc(db, collectionName, docId);
+    const docSnap = await getDoc(docRef);
+
+    if (docSnap.exists()) {
+        return docSnap.data();
+    } else {
+        console.log('No such document!');
+        return null;
     }
 };

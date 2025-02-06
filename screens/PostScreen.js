@@ -1,5 +1,5 @@
 import { useIsFocused } from "@react-navigation/native";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import Post from "../components/Post";
@@ -7,30 +7,27 @@ import UserProfile from "../components/UserProfile";
 import { colors } from "../styles/global";
 import { fetchAllPosts } from "../utils.js/firestore";
 import { useSelector } from "react-redux";
-
+import { useFocusEffect } from '@react-navigation/native';
 export default function PostScreen({ navigation }) {
     const user = useSelector((state) => state.user.userInfo);
     const displayName = user?.displayName;
     const [posts, setPosts] = useState([]);
 
-    const isFocused = useIsFocused();
+    useFocusEffect(
+        useCallback(() => {
+            const getAllPosts = async () => {
+                try {
+                    const result = await fetchAllPosts();
+                    const allPosts = result.flatMap(user => result ? user.posts : []);
+                    setPosts(allPosts);
+                } catch (error) {
+                    console.log(error);
+                }
+            };
 
-
-    useEffect(() => {
-        const getAllPosts = async () => {
-            try {
-                const result = await fetchAllPosts();
-                console.log(result);
-                const allPosts = result.flatMap(user => result ? user.posts : []);
-                setPosts(allPosts);
-                console.log(allPosts);
-            } catch (error) {
-                console.log(error);
-            }
-        };
-
-        getAllPosts();
-    }, []);
+            getAllPosts();
+        }, [])
+    );
 
     // Переніс перехід на CommentsScreen звідси всередину компонента <Post />
     const renderItem = ({ item }) => <Post data={item} />;
@@ -57,6 +54,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: colors.white,
+        marginBottom: 100,
     },
     contentContainer: {
         padding: 16,

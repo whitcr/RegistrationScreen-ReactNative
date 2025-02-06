@@ -3,16 +3,8 @@ import { useNavigation } from '@react-navigation/native';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { colors } from "../styles/global";
 
-export default function Post({ data }) {
+export default function Post({ data = [] }) {
     const navigation = useNavigation();
-    data = {
-        id: 0,
-        image: "../assets/",
-        title: 'Post',
-        adress: 'Kyiv',
-        comments: 0,
-    }
-    // const { id, image = "../assets/" , title = "Post", adress = 'Kyiv', comments } = data;
     const { id, image , title, adress, comments } = data;
 
 
@@ -26,7 +18,7 @@ export default function Post({ data }) {
 
     return (
         <View style={styles.container}>
-            <Image source={image} style={styles.image} />
+            <Image source={{uri: image}} style={styles.image} />
             <Text style={styles.title}>{title}</Text>
             <View style={styles.footer}>
                 <View style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
